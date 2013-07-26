@@ -11,7 +11,7 @@ of the low-level details of the storage nodes.
 
 In particular, Lomatia provides the following command:
 
-* `move-path <pairtree_path> <source> <target>`
+* `replant --path <pairtree_path> --source <source> --target <target>`
 
 This command determines whether its path argument is the root of 
 a [BagIt](https://wiki.ucop.edu/display/Curation/BagIt) bag or just
