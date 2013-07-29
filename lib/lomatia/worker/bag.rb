@@ -35,11 +35,15 @@ module Lomatia
         File.symlink source, target
 
         # Clear cruft.  This is slow.
-        FileUtils.rm_rf source_old_path
-        if File.symlink? target_old_path
-          File.unlink target_old_path
-        else
-          FileUtils.rm_rf target_old_path
+        [
+          source_old_path,
+          target_old_path,
+        ].each do |path|
+          if File.symlink? path
+            File.unlink path
+          else
+            FileUtils.rm_rf path
+          end
         end
       end
 
