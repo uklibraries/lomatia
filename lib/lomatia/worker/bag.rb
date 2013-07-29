@@ -7,6 +7,11 @@ module Lomatia
         source = File.join(options['source'], options['path'])
         target = File.join(options['target'], options['path'])
 
+        # Temporary paths for the move.
+        source_old_path = self.path_for(source, 'old_path')
+        target_new_path = self.path_for(target, 'new_path')
+        target_old_path = self.path_for(target, 'old_path')
+
         # Make sure the move won't clobber anything.
         raise ForbiddenBagMoveError unless self.can_move_bag?(source, target)
 
@@ -15,40 +20,25 @@ module Lomatia
         raise SourceBagInvalidError unless source_bag.valid?
 
         # Copy bag to target node.  This is slow.
-        target_path = self.rsync source, target
+        self.rsync source, target_new_path
 
         # Check fixity of target.  This is slow.
-        target_bag = BagIt::Bag.new target_path
+        target_bag = BagIt::Bag.new target_new_path
         raise TargetBagInvalidError unless target_bag.valid?
 
         # Do the symlink dance!
-        source_path = File.join(
-          File.dirname source,
-          [
-            File.basename(source),
-            Digest::MD5.digest("#{source}:#{Process.pid}"),
-          ].join('.')
-        )
-        FileUtils.mv source, source_path
-
-        if File.exist? target and not(File.symlink? target)
-          target_old_path = File.join(
-            File.dirname target,
-            [
-              File.basename(target),
-              Digest::MD5.digest("#{target}:#{Process.pid}"),
-            ].join('.')
-          )
-          FileUtils.mv target, target_old_path
-        end
-
-        File.unlink(target) if File.exist? target
-        FileUtils.mv target_path, target
+        FileUtils.mv source, source_old_path
+        FileUtils.mv target, target_old_path
+        FileUtils.mv target_new_path, target
         File.symlink source, target
 
         # Clear cruft.  This is slow.
-        FileUtils.rm_rf target_old_path
-        FileUtils.rm_rf source_path
+        FileUtils.rm_rf source_old_path
+        if File.symlink? target_old_path
+          File.unlink target_old_path
+        else
+          FileUtils.rm_rf target_old_path
+        end
       end
 
       def self.can_move_bag?(source, target)
@@ -59,25 +49,27 @@ module Lomatia
       end
 
       def self.rsync(source, target)
-        FileUtils.mkdir_p(File.dirname target)
-        target_path = File.join(
-          File.dirname target,
-          [
-            File.basename(source),
-            Digest::MD5.digest("#{source}:#{Process.pid}"),
-          ].join('.')
-        )
         rsync_command = '/usr/bin/rsync'
         rsync_options = '-avPOK'
 
         if system(rsync_command, 
                   rsync_options,
                   source + '/',
-                  target_path)
-          target_path
+                  target)
+          true
         else
           raise SourceBagRsyncFailedError
         end
+      end
+
+      def self.temp_path_for(path, label)
+        File.join(
+          File.dirname path,
+          [
+            File.basename path,
+            Digest::MD5.digest("#{label}:#{Process.pid}"),
+          ].join('.')
+        )
       end
     end
   end
