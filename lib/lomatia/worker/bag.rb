@@ -55,6 +55,7 @@ module Lomatia
       end
 
       def self.rsync(source, target)
+        FileUtils.mkdir_p(File.dirname target)
         rsync_command = '/usr/bin/rsync'
         rsync_options = '-avPOK'
 
