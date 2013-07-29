@@ -10,9 +10,9 @@ module Lomatia
         target = File.join(options['target'], options['path'])
 
         # Temporary paths for the move.
-        source_old_path = self.path_for(source, 'old_path')
-        target_new_path = self.path_for(target, 'new_path')
-        target_old_path = self.path_for(target, 'old_path')
+        source_old_path = self.temp_path_for(source, 'old_path')
+        target_new_path = self.temp_path_for(target, 'new_path')
+        target_old_path = self.temp_path_for(target, 'old_path')
 
         # Make sure the move won't clobber anything.
         raise ForbiddenBagMoveError unless self.can_move_bag?(source, target)
