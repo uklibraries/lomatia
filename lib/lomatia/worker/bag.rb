@@ -73,7 +73,7 @@ module Lomatia
         File.join(
           File.dirname path,
           [
-            File.basename path,
+            File.basename(path),
             Digest::MD5.digest("#{label}:#{Process.pid}"),
           ].join('.')
         )
