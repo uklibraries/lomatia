@@ -1,5 +1,4 @@
-require 'lomatia/worker/bag'
-require 'lomatia/worker/branch'
+require 'lomatia/worker/replant'
 
 module Lomatia
   module Worker

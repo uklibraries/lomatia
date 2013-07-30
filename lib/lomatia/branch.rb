@@ -11,9 +11,9 @@ module Lomatia
       end
 
       if File.exist?(File.join source_path, 'bagit.txt')
-        Resque.enqueue(Lomatia::Worker::Bag, options)
+        Resque.enqueue(Lomatia::Worker::Replant::Bag, options)
       else
-        Resque.enqueue(Lomatia::Worker::Branch, options)
+        Resque.enqueue(Lomatia::Worker::Replant::Branch, options)
       end
     end
   end
