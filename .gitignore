@@ -1,2 +1,4 @@
 *.swp
+log/*
+scripts/check_fixity
 scripts/replant

@@ -1,0 +1,4 @@
+#!/bin/bash
+PWD=`pwd`
+cd /path/to/lomatia
+bin/check_fixity "$PWD" "$@"

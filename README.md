@@ -9,7 +9,7 @@ to be directed by higher-level tools to manage the nodes.  In
 return, Lomatia allows the higher-level tools to ignore some
 of the low-level details of the storage nodes.
 
-In particular, Lomatia provides the following command:
+In particular, Lomatia provides the following commands:
 
 * `replant --path <pairtree_path> --source <source> --target <target>`
 
@@ -22,9 +22,14 @@ The bag handler rsyncs the given bag from one storage node to
 another, moves the original out of the way, creates a symlink
 to the new copy, and finally deletes the original bag.
 
-The path handler runs the command `move-path` on each of the
+The path handler runs the command `replant` on each of the
 path's children, using the same `<source>` and `<target>` 
 arguments as it received.
+
+* `check_fixity --log <log_file> --path <pairtree_path> --node <node>`
+
+This command runs a BagIt validity check on each bag in the 
+indicated part of the tree, logging the results in a log file.
 
 Installation
 ------------
