@@ -12,10 +12,11 @@ module Lomatia
           identifier = File.basename node
           bag = BagIt::Bag.new node
           log = options['log']
-          puts log
 
           File.open(log, 'a') do |f|
-            f.puts "#{identifier}: #{bag.valid? ? "valid" : "invalid"}"
+            validity = bag.valid? ? "valid" : "invalid"
+            puts "#{identifier}: #{validity}"
+            f.puts "#{identifier}: #{validity}"
           end
         end
       end
