@@ -5,7 +5,7 @@ module Lomatia
         @queue = :lomatia
   
         def self.perform(options)
-          unless File.directory?(File.join(options['source'], options['path']))
+          unless File.directory?(File.join(options['node'], options['path']))
             raise Lomatia::Error::BranchNotADirectoryError
           end
   
