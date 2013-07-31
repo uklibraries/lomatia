@@ -1,4 +1,7 @@
 *.swp
 log/*
+
+# TODO: something besides this.
 scripts/check_fixity
+scripts/repair_mets_cruft
 scripts/replant

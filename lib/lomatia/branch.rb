@@ -13,6 +13,16 @@ module Lomatia
       end
     end
 
+    def self.repair_mets_cruft options
+      node = File.join options['node'], options['path']
+
+      if File.exist?(File.join node, 'bagit.txt')
+        Resque.enqueue(Lomatia::Worker::RepairMetsCruft::Bag, options)
+      else
+        Resque.enqueue(Lomatia::Worker::RepairMetsCruft::Branch, options)
+      end
+    end
+
     def self.replant options
       source_path = File.join options['source'], options['path']
 

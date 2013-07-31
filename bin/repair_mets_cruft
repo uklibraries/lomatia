@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+libdir = File.expand_path(File.join('..', 'lib'), File.dirname(__FILE__))
+$LOAD_PATH.unshift libdir unless $LOAD_PATH.include? libdir
+
+require 'bundler/setup'
+require 'lomatia'
+require 'trollop'
+
+opts = Trollop::options do
+  opt :path, "PairTree path (complete or partial) of a BagIt bag", :type => :string
+  opt :node, "Path to node", :type => :string
+end
+
+[
+  :path,
+  :node,
+].each do |symbol|
+  Trollop::die symbol unless opts[symbol]
+end
+
+Lomatia::Branch.repair_mets_cruft({
+  'path' => opts[:path],
+  'node' => opts[:node],
+})
