@@ -12,6 +12,7 @@ opts = Trollop::options do
   opt :log, "Log file for results", :type => :string
   opt :path, "PairTree path (complete or partial) of a BagIt bag", :type => :string
   opt :node, "Path to node", :type => :string
+  opt :error, "Log file for validation errors", :type => :string
 end
 
 [
@@ -23,8 +24,14 @@ end
   Trollop::die symbol unless opts[symbol]
 end
 
-Lomatia::Branch.check_fixity({
+h = {
   'path' => opts[:path],
   'log' => File.join(opts[:pwd], opts[:log]),
   'node' => opts[:node],
-})
+}
+
+unless opts[:error].nil?
+  h['error'] = File.join(opts[:pwd], opts[:error])
+end
+
+Lomatia::Branch.check_fixity h
