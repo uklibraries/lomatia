@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+libdir = File.expand_path(File.join('..', 'lib'), File.dirname(__FILE__))
+$LOAD_PATH.unshift libdir unless $LOAD_PATH.include? libdir
+
+require 'bundler/setup'
+require 'lomatia'
+
+Resque::Job.destroy(:lomatia, Lomatia::Worker::CheckFixity::Branch)
+Resque::Job.destroy(:lomatia, Lomatia::Worker::CheckFixity::Bag)
+

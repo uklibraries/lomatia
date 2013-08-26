@@ -20,7 +20,7 @@ module Lomatia
           end
 
           if options['error'] and validity == "invalid"
-            File.open(errors, 'a') do |f|
+            File.open(options['error'], 'a') do |f|
               f.puts '=' * 70
               f.puts identifier
               f.puts node
