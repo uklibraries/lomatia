@@ -3,6 +3,16 @@ require 'resque'
 
 module Lomatia
   module Branch
+    def self.gather_title_statistics options
+      node = File.join options['node'], options['path']
+
+      if File.exist?(File.join node, 'bagit.txt')
+        Resque.enqueue(Lomatia::Worker::GatherTitleStatistics::Bag, options)
+      else
+        Resque.enqueue(Lomatia::Worker::GatherTitleStatistics::Branch, options)
+      end
+    end
+
     def self.check_fixity options
       node = File.join options['node'], options['path']
 

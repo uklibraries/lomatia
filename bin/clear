@@ -9,3 +9,5 @@ require 'lomatia'
 Resque::Job.destroy(:lomatia, Lomatia::Worker::CheckFixity::Branch)
 Resque::Job.destroy(:lomatia, Lomatia::Worker::CheckFixity::Bag)
 
+Resque::Job.destroy(:lomatia, Lomatia::Worker::GatherTitleStatistics::Branch)
+Resque::Job.destroy(:lomatia, Lomatia::Worker::GatherTitleStatistics::Bag)
