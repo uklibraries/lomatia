@@ -1,3 +1,16 @@
-default:
-  hosts: [abel, baker, charlie]
+default: &default
+  create_job: "/usr/local/bin/create_job"
+
+abel:
+  <<: *default
   username: igor
+
+baker:
+  <<: *default
+  username: inga
+  create_job: "/usr/bin/create_job"
+
+charlie:
+  <<: *default
+  username: frau_blucher
+  create_job: "/usr/bin/neigh"
