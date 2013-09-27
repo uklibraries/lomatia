@@ -16,7 +16,7 @@ class LaunchRemoteJob
     if config.has_key? server
       Net::SSH.start(server, config[server]['username']) do |ssh|
         serialized = Base64.strict_encode64(payload.to_json)
-        output = ssh.exec!("#{config[server]['create_job']} #{serialized}")
+        output = ssh.exec!("#{config[server]['create_job']} --base64 #{serialized}")
         puts output
       end
     else
