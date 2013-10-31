@@ -29,6 +29,14 @@ class BagAnalyzer
       File.size(File.join(@node, 'data', f['xlink:href']))
     }.inject(&:+)
   end
+
+  def AIPs_pdf_count
+    @xml.xpath('some AIPs path').count
+  end
+
+  def SIPs_pdf_count
+    @xml.xpath('some SIPs path').count
+  end
 end
 
 module Lomatia
@@ -57,6 +65,8 @@ module Lomatia
                 analyzer.page_count,
                 analyzer.total_pdf_size,
                 analyzer.total_tiff_size,
+                analyzer.AIPs_pdf_count,
+                analyzer.SIPs_pdf_count,
               ]
             end
           end
