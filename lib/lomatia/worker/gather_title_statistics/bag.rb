@@ -2,6 +2,7 @@ require 'bundler/setup'
 require 'bagit'
 require 'csv'
 require 'nokogiri'
+require 'find'
 
 class BagAnalyzer
   def initialize options
@@ -31,12 +32,23 @@ class BagAnalyzer
   end
 
   def AIPs_pdf_count
-    @xml.xpath('some AIPs path').count
+    pdf_file_paths = [] 
+    if (Dir.glob("*.tif"))
+    @xml.xpath('//mets:file[@USE="print image"]/mets:FLocat').collect { |f|
+      Find.find(@node) do |path|  
+        pdf_file_paths << path if path =~ /.*\.pdf$/
+    }.inject(&:+)
+    end   
   end
 
-  def SIPs_pdf_count
-    @xml.xpath('some SIPs path').count
-  end
+  def DIPs_pdf_count
+    pdf_file_paths = [] 
+    if (Dir.glob("*.jpg"))
+    @xml.xpath('//mets:file[@USE="print image"]/mets:FLocat').collect { |f|
+      Find.find(@node) do |path|  
+        pdf_file_paths << path if path =~ /.*\.pdf$/
+    }.inject(&:+)
+    end   
 end
 
 module Lomatia
