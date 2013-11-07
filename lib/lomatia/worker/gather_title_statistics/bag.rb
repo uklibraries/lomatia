@@ -33,7 +33,7 @@ class BagAnalyzer
 
   def AIPs_pdf_count
     pdf_file_paths = [] 
-    if (Dir.glob("*.tif"))
+    if (Dir.glob(@node + "*.tif"))
     @xml.xpath('//mets:file[@USE="print image"]/mets:FLocat').collect { |f|
       Find.find(@node) do |path|  
         pdf_file_paths << path if path =~ /.*\.pdf$/
@@ -43,7 +43,7 @@ class BagAnalyzer
 
   def DIPs_pdf_count
     pdf_file_paths = [] 
-    if (Dir.glob("*.jpg"))
+    if (Dir.glob(@node + "*.jpg"))
     @xml.xpath('//mets:file[@USE="print image"]/mets:FLocat').collect { |f|
       Find.find(@node) do |path|  
         pdf_file_paths << path if path =~ /.*\.pdf$/
