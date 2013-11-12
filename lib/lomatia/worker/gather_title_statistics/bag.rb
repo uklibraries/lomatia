@@ -33,23 +33,37 @@ class BagAnalyzer
 
   def AIPs_pdf_count
     pdf_file_paths = [] 
+    search_path = @node
+    file_with_ext = {}
     if (Dir.glob(@node + "*.tif"))
     @xml.xpath('//mets:file[@USE="print image"]/mets:FLocat').collect { |f|
-      Find.find(@node) do |path|  
-        pdf_file_paths << path if path =~ /.*\.pdf$/
+      Find.find(search_path).each do |path|  
+        if File.file? path
+           extension = File.extname path
+           file_with_ext[extension] || = []
+           file_with_ext[extension] << path
+        end
+      end
     }.inject(&:+)
     end   
   end
 
   def DIPs_pdf_count
     pdf_file_paths = [] 
+    search_path = @node
+    file_with_ext = {}
     if (Dir.glob(@node + "*.jpg"))
     @xml.xpath('//mets:file[@USE="print image"]/mets:FLocat').collect { |f|
-      Find.find(@node) do |path|  
-        pdf_file_paths << path if path =~ /.*\.pdf$/
+      Find.find(search_path).each do |path|  
+        if File.file? path
+           extension = File.extname path
+           file_with_ext[extension] || = []
+           file_with_ext[extension] << path
+        end
+      end
     }.inject(&:+)
     end   
-end
+  end
 
 module Lomatia
   module Worker
