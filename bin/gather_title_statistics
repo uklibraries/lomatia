@@ -20,7 +20,6 @@ end
   :log,
   :path,
   :node,
-  :titles,
 ].each do |symbol|
   Trollop::die symbol unless opts[symbol]
 end
@@ -29,7 +28,10 @@ h = {
   'path' => opts[:path],
   'log' => File.join(opts[:pwd], opts[:log]),
   'node' => opts[:node],
-  'titles' => File.join(opts[:pwd], opts[:titles]),
 }
+
+if opts[:titles]
+  h['titles'] = File.join(opts[:pwd], opts[:titles])
+end
 
 Lomatia::Branch.gather_title_statistics h
