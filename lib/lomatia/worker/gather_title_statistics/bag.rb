@@ -13,7 +13,11 @@ class BagAnalyzer
   end
 
   def title
-    @xml.xpath('//dc:source', 'dc' => 'http://purl.org/dc/elements/1.1/').first.content
+    begin
+      @xml.xpath('//dc:source', 'dc' => 'http://purl.org/dc/elements/1.1/').first.content
+    rescue
+      'no title'
+    end
   end
 
   def page_count
