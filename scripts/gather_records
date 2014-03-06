@@ -1,0 +1,4 @@
+#!/bin/bash
+PWD=`pwd`
+cd /opt/pdp/services/lomatia
+bin/gather_records --pwd "$PWD" "$@"

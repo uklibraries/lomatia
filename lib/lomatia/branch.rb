@@ -3,6 +3,17 @@ require 'resque'
 
 module Lomatia
   module Branch
+    # TODO merge all these methods into something simpler
+    def self.gather_records options
+      node = File.join options['node'], options['path']
+
+      if File.exist?(File.join node, 'bagit.txt')
+        Resque.enqueue(Lomatia::Worker::GatherRecords::Bag, options)
+      else
+        Resque.enqueue(Lomatia::Worker::GatherRecords::Branch, options)
+      end
+    end
+
     def self.gather_title_statistics options
       node = File.join options['node'], options['path']
 
