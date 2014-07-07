@@ -14,6 +14,16 @@ module Lomatia
       end
     end
 
+    def self.gather_repository_statistics options
+      node = File.join options['node'], options['path']
+
+      if File.exist?(File.join node, 'bagit.txt')
+        Resque.enqueue(Lomatia::Worker::GatherRepositoryStatistics::Bag, options)
+      else
+        Resque.enqueue(Lomatia::Worker::GatherRepositoryStatistics::Branch, options)
+      end
+    end
+
     def self.gather_title_statistics options
       node = File.join options['node'], options['path']
 
