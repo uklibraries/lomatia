@@ -46,7 +46,7 @@ end
 
 module Lomatia
   module Worker
-    module GatherRespositoryStatistics
+    module GatherRepositoryStatistics
       class Bag
         @queue = :lomatia
   
