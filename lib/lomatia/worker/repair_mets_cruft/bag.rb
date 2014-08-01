@@ -15,18 +15,29 @@ module Lomatia
           bag = BagIt::Bag.new node
 
           if bag.paths.include? CRUFT
+            puts "#{identifier}: removing CRUFT"
             bag.remove_file CRUFT
 
+            changed = false
             bag.manifest_files.each do |f|
               lines = File.readlines(f).reject do |f|
                 f =~ /\s+data\/#{CRUFT}\s*/
               end
 
-              File.open("#{f}.tmp", 'w') do |io|
-                lines.each {|line| io.write line}
-              end
+              if lines.count < File.readlines(f).count
+                changed = true
 
-              FileUtils.mv "#{f}.tmp", f
+                File.open("#{f}.tmp", 'w') do |io|
+                  lines.each {|line| io.write line}
+                end
+
+                FileUtils.mv "#{f}.tmp", f
+              end
+            end
+
+            if changed
+              puts "#{identifier}: updating tag manifest files"
+              bag.tagmanifest!
             end
           end
         end
