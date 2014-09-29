@@ -58,7 +58,8 @@ module Lomatia
       source_path = File.join options['source'], options['path']
 
       if File.symlink? source_path
-        raise Lomatia::Error::BranchAlreadyMovedError
+        # It's acceptable to fail silently here
+        return
       end
 
       if File.exist?(File.join source_path, 'bagit.txt')
