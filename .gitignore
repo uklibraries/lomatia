@@ -6,5 +6,6 @@ config/remote-hosts.yml
 
 # TODO: something besides this.
 scripts/check_fixity
+scripts/clean_solr
 scripts/repair_mets_cruft
 scripts/replant

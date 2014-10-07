@@ -4,6 +4,16 @@ require 'resque'
 module Lomatia
   module Branch
     # TODO merge all these methods into something simpler
+    def self.clean_solr options
+      node = File.join options['node'], options['path']
+
+      if File.exist?(File.join node, 'bagit.txt')
+        Resque.enqueue(Lomatia::Worker::CleanSolr::Bag, options)
+      else
+        Resque.enqueue(Lomatia::Worker::CleanSolr::Branch, options)
+      end
+    end
+
     def self.gather_records options
       node = File.join options['node'], options['path']
 

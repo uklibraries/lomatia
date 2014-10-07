@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+libdir = File.expand_path(File.join('..', 'lib'), File.dirname(__FILE__))
+$LOAD_PATH.unshift libdir unless $LOAD_PATH.include? libdir
+
+require 'bundler/setup'
+require 'lomatia'
+require 'trollop'
+
+opts = Trollop::options do
+  opt :pwd, "Present working directory (determined automatically)", :type => :string
+  opt :path, "PairTree path (complete or partial) of a BagIt bag", :type => :string
+  opt :node, "Path to node", :type => :string
+  opt :solr_source, "Path to Solr store", :type => :string
+  opt :solr_target, "Path to repaired Solr store", :type => :string
+end
+
+[
+  :pwd,
+  :path,
+  :node,
+  :solr_source,
+  :solr_target,
+].each do |symbol|
+  Trollop::die symbol unless opts[symbol]
+end
+
+h = {
+  'path' => opts[:path],
+  'node' => opts[:node],
+  'solr_source' => opts[:solr_source],
+  'solr_target' => opts[:solr_target],
+}
+
+Lomatia::Branch.clean_solr h
