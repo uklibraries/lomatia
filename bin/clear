@@ -14,3 +14,6 @@ Resque::Job.destroy(:lomatia, Lomatia::Worker::GatherTitleStatistics::Bag)
 
 Resque::Job.destroy(:lomatia, Lomatia::Worker::GatherRepositoryStatistics::Branch)
 Resque::Job.destroy(:lomatia, Lomatia::Worker::GatherRepositoryStatistics::Bag)
+
+Resque::Job.destroy(:lomatia, Lomatia::Worker::CleanSolr::Branch)
+Resque::Job.destroy(:lomatia, Lomatia::Worker::CleanSolr::Bag)
