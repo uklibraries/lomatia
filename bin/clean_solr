@@ -9,6 +9,7 @@ require 'trollop'
 
 opts = Trollop::options do
   opt :pwd, "Present working directory (determined automatically)", :type => :string
+  opt :log, "Log file for results", :type => :string
   opt :path, "PairTree path (complete or partial) of a BagIt bag", :type => :string
   opt :node, "Path to node", :type => :string
   opt :solr_source, "Path to Solr store", :type => :string
@@ -17,6 +18,7 @@ end
 
 [
   :pwd,
+  :log,
   :path,
   :node,
   :solr_source,
@@ -26,6 +28,7 @@ end
 end
 
 h = {
+  'log' => File.join(opts[:pwd], opts[:log]),
   'path' => opts[:path],
   'node' => opts[:node],
   'solr_source' => opts[:solr_source],

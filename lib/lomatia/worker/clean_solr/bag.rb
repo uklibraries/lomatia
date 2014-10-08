@@ -2,6 +2,7 @@ require 'bundler/setup'
 require 'bagit'
 require 'find'
 require 'json'
+require 'logger'
 require 'pairtree'
 
 module Lomatia
@@ -13,29 +14,45 @@ module Lomatia
         def self.perform(options)
           node = File.join(options['node'], options['path'])
           identifier = File.basename node
+          log_file = File.open(options['log'], File::WRONLY | File::APPEND)
+          logger = Logger.new log_file
 
           source_tree = Pairtree.at(options['solr_source'], create: true)
           source_path = source_tree.get(identifier).path
 
           target_tree = Pairtree.at(options['solr_target'], create: true)
 
-          Find.find(source_path) do |path|
-            if File.file? path
-              base = File.basename path
-              original = JSON.parse(IO.read path)
-              normalized = self.normalize original
-
-              if normalized == original
-                puts "CleanSolr: #{base} unchanged"
-              else
-                target_path = target_tree.mk(identifier).path
-                output = File.join(target_path, base)
-                File.open(output, 'w') do |f|
-                  f.write normalized.to_json
+          if File.directory? source_path
+            Find.find(source_path) do |path|
+              if File.file? path
+                begin
+                  original = JSON.parse(IO.read path)
+                rescue JSON::ParserError
+                  logger.warn "CleanSolr: #{path} not valid JSON"
+                  next
                 end
-                puts "CleanSolr: #{base} updated -> #{output}"
+
+                base = File.basename path
+                normalized = self.normalize original
+
+                if normalized == original
+                  message = "CleanSolr: #{base} unchanged"
+                  logger.debug message
+                  puts message
+                else
+                  target_path = target_tree.mk(identifier).path
+                  output = File.join(target_path, base)
+                  File.open(output, 'w') do |f|
+                    f.write normalized.to_json
+                  end
+                  message = "CleanSolr: #{base} updated -> #{output}"
+                  logger.info message
+                  puts message
+                end
               end
             end
+          else
+            logger.warn "CleanSolr: no such directory: #{source_path}"
           end
         end
 
