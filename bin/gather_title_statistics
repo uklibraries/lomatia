@@ -13,6 +13,7 @@ opts = Trollop::options do
   opt :path, "PairTree path (complete or partial) of a BagIt bag", :type => :string
   opt :node, "Path to node", :type => :string
   opt :titles, "Path to titles file", :type => :string
+  opt :format, "Required format", :type => :string
 end
 
 [
@@ -32,6 +33,10 @@ h = {
 
 if opts[:titles]
   h['titles'] = File.join(opts[:pwd], opts[:titles])
+end
+
+if opts[:format]
+  h['format'] = opts[:format]
 end
 
 Lomatia::Branch.gather_title_statistics h

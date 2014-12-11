@@ -20,6 +20,14 @@ class BagAnalyzer
     end
   end
 
+  def format
+    begin
+      @xml.xpath('//dc:format', 'dc' => 'http://purl.org/dc/elements/1.1/').first.content
+    rescue
+      'no format'
+    end
+  end
+
   def page_count
     @xml.xpath('//mets:structMap/mets:div').count
   end
@@ -88,6 +96,12 @@ module Lomatia
           end
 
           analyzer = BagAnalyzer.new :node => node
+          if options['format']
+            unless options['format'] == analyzer.format
+              return
+            end
+          end
+
           CSV.open(log, 'a') do |csv|
             puts "#{identifier}"
             csv << [
