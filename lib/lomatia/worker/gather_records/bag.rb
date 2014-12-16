@@ -39,6 +39,16 @@ class DublinCoreReader
       'no title'
     end
   end
+
+  def lccn
+    begin
+      sip_id = @xml.xpath('//mets:altRecordID[@TYPE="DLXS"]', 'mets' => 'http://www.loc.gov/METS/').first.content.strip
+      pieces = sip_id.split('_')
+      pieces[1]
+    rescue
+      'no lccn'
+    end
+  end
 end
 
 module Lomatia
@@ -52,6 +62,11 @@ module Lomatia
           reader = DublinCoreReader.new(node: node)
 
           if options['require_source'] and reader.source == options['require_source'].strip
+            puts "GatherRecords: #{reader.summary}"
+            File.open(options['log'], 'a') do |f|
+              f.puts reader.to_s
+            end
+          elsif options['require_lccn'] and options['require_lccn'].include?(reader.lccn)
             puts "GatherRecords: #{reader.summary}"
             File.open(options['log'], 'a') do |f|
               f.puts reader.to_s
