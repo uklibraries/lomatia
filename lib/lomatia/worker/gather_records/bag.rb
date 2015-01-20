@@ -1,6 +1,7 @@
 require 'bundler/setup'
 require 'nokogiri'
 
+# TODO: rename or break apart this class.
 class DublinCoreReader
   def initialize options
     @node = options[:node]
@@ -49,6 +50,11 @@ class DublinCoreReader
       'no lccn'
     end
   end
+
+  def is_finding_aid?
+    fa = @xml.xpath('//mets:fileGrp[@ID="FileGrpFindingAid"]')
+    fa and fa.count > 0
+  end
 end
 
 module Lomatia
@@ -67,6 +73,11 @@ module Lomatia
               f.puts reader.to_s
             end
           elsif options['require_lccn'] and options['require_lccn'].include?(reader.lccn)
+            puts "GatherRecords: #{reader.summary}"
+            File.open(options['log'], 'a') do |f|
+              f.puts reader.to_s
+            end
+          elsif options['require_finding_aid'] and reader.is_finding_aid?
             puts "GatherRecords: #{reader.summary}"
             File.open(options['log'], 'a') do |f|
               f.puts reader.to_s

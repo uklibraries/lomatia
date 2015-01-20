@@ -12,6 +12,7 @@ opts = Trollop::options do
   opt :log, "Log file for results", :type => :string
   opt :path, "PairTree path (complete or partial) of a BagIt bag", :type => :string
   opt :node, "Path to node", :type => :string
+  opt :require_finding_aid, "Restrict collection to records with EADs"
   opt :require_source, "Restrict collection to records matching this source", :type => :string
   opt :require_lccn, "Restrict collection to records matching these LCCNs", :type => :strings
 end
@@ -37,6 +38,10 @@ end
 
 if opts[:require_lccn]
   h['require_lccn'] = opts[:require_lccn]
+end
+
+if opts[:require_finding_aid]
+  h['require_finding_aid'] = opts[:require_finding_aid]
 end
 
 Lomatia::Branch.gather_records h
