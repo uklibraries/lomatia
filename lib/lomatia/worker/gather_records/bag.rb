@@ -41,6 +41,14 @@ class DublinCoreReader
     end
   end
 
+  def format
+    begin
+      @xml.xpath('//dc:format', 'dc' => 'http://purl.org/dc/elements/1.1/').first.content.strip
+    rescue
+      'no format'
+    end
+  end
+
   def lccn
     begin
       sip_id = @xml.xpath('//mets:altRecordID[@TYPE="DLXS"]', 'mets' => 'http://www.loc.gov/METS/').first.content.strip
@@ -78,6 +86,11 @@ module Lomatia
               f.puts reader.to_s
             end
           elsif options['require_finding_aid'] and reader.is_finding_aid?
+            puts "GatherRecords: #{reader.summary}"
+            File.open(options['log'], 'a') do |f|
+              f.puts reader.to_s
+            end
+          elsif options['require_format'] and reader.format == options['require_format']
             puts "GatherRecords: #{reader.summary}"
             File.open(options['log'], 'a') do |f|
               f.puts reader.to_s
