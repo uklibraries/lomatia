@@ -24,7 +24,6 @@ end
   :log,
   :path,
   :node,
-  :all,
 ].each do |symbol|
   Trollop::die symbol unless opts[symbol]
 end
@@ -49,6 +48,10 @@ end
 
 if opts[:require_format]
   h['require_format'] = opts[:require_format]
+end
+
+if opts.has_key? :all
+  h['all'] = opts[:all]
 end
 
 Lomatia::Branch.gather_records h
