@@ -75,7 +75,12 @@ module Lomatia
           node = File.join(options['node'], options['path'])
           reader = DublinCoreReader.new(node: node)
 
-          if options['require_source'] and reader.source == options['require_source'].strip
+          if options['all']
+            puts "GatherRecords: #{reader.summary}"
+            File.open(options['log'], 'a') do |f|
+              f.puts reader.to_s
+            end
+          elsif options['require_source'] and reader.source == options['require_source'].strip
             puts "GatherRecords: #{reader.summary}"
             File.open(options['log'], 'a') do |f|
               f.puts reader.to_s

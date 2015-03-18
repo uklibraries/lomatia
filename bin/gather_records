@@ -16,6 +16,7 @@ opts = Trollop::options do
   opt :require_format, "Restrict collection to records matching this format", :type => :string
   opt :require_source, "Restrict collection to records matching this source", :type => :string
   opt :require_lccn, "Restrict collection to records matching these LCCNs", :type => :strings
+  opt :all, "Collect all records", :default => false
 end
 
 [
@@ -23,6 +24,7 @@ end
   :log,
   :path,
   :node,
+  :all,
 ].each do |symbol|
   Trollop::die symbol unless opts[symbol]
 end
