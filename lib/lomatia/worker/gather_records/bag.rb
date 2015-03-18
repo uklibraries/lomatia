@@ -3,18 +3,28 @@ require 'nokogiri'
 
 # TODO: rename or break apart this class.
 class DublinCoreReader
+  attr_reader :mets
+
   def initialize options
     @node = options[:node]
     @identifier = File.basename @node
-    @mets = File.join(@node, 'data', 'mets.xml')
-    @xml = Nokogiri::XML IO.read(@mets)
+    file = File.join(@node, 'data', 'mets.xml')
+    @mets = nil
+    if File.exist?(file)
+      @mets = File.join(@node, 'data', 'mets.xml')
+      @xml = Nokogiri::XML IO.read(@mets)
+    end
   end
 
   def to_s
-    [
-      url,
-      title,
-    ].join(' ')
+    if @mets
+      [
+        url,
+        title.gsub(/\s+/, ' '),
+      ].join(' ')
+    else
+      "NOT ok #{@identifier}: no METS"
+    end
   end
 
   def summary
