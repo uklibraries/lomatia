@@ -11,6 +11,14 @@ module Lomatia
         def self.perform(options)
           source = File.join(options['source'], options['path'])
           target = File.join(options['target'], options['path'])
+
+          # Check age
+          seconds_per_day = 86_400
+          min_age = options['min_age']
+          actual_age = (Time.now - File.stat(source).mtime).to_i / seconds_per_day
+          if (actual_age < min_age)
+            return
+          end
   
           # Temporary paths for the move.
           source_old_path = self.temp_path_for(source, 'old_path')

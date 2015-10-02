@@ -12,12 +12,14 @@ opts = Trollop::options do
   opt :path, "PairTree path (complete or partial) of a BagIt bag", :type => :string
   opt :source, "Path to source node", :type => :string
   opt :target, "Path to target node", :type => :string
+  opt :min_age, "Minimum age in days of bags to move", :default => 0
 end
 
 [
   :path,
   :source,
   :target,
+  :min_age,
 ].each do |symbol|
   Trollop::die symbol unless opts[symbol]
 end
@@ -26,4 +28,5 @@ Lomatia::Branch.replant({
   'path' => opts[:path],
   'source' => File.join(opts[:root], opts[:source]),
   'target' => File.join(opts[:root], opts[:target]),
+  'min_age' => opts[:min_age]
 })
