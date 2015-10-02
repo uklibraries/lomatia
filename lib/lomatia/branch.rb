@@ -44,6 +44,16 @@ module Lomatia
       end
     end
 
+    def self.kudl_stats options
+      node = File.join options['node'], options['path']
+
+      if File.exist?(File.join node, 'bagit.txt')
+        Resque.enqueue(Lomatia::Worker::KudlStats::Bag, options)
+      else
+        Resque.enqueue(Lomatia::Worker::KudlStats::Branch, options)
+      end
+    end
+
     def self.check_fixity options
       node = File.join options['node'], options['path']
 
