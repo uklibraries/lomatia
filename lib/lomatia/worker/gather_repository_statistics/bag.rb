@@ -20,6 +20,14 @@ class BagAnalyzer
     end
   end
 
+  def format
+    begin
+      @xml.xpath('//dc:format', 'dc' => 'http://purl.org/dc/elements/1.1/').first.content.strip
+    rescue
+      'no format'
+    end
+  end
+
   def total_size
     size = 0
     Find.find(@node) do |path|
@@ -63,6 +71,7 @@ module Lomatia
               identifier,
               node,
               analyzer.type,
+              analyzer.format,
               analyzer.repository,
               analyzer.total_size,
             ]
