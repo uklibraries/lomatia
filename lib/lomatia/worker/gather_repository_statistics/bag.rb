@@ -5,7 +5,7 @@ require 'find'
 require 'nokogiri'
 require 'time'
 
-class BagAnalyzer
+class GrsBagAnalyzer
   def initialize options
     @node = options[:node]
     @mets = File.join(@node, 'data', 'mets.xml')
@@ -30,7 +30,8 @@ class BagAnalyzer
 
   def total_size
     size = 0
-    Find.find(@node) do |path|
+    data_dir = File.join(@node, 'data')
+    Find.find(data_dir) do |path|
       if File.file? path
         size += File.size(path)
       end
@@ -64,7 +65,7 @@ module Lomatia
           bag = BagIt::Bag.new node
           log = options['log']
 
-          analyzer = BagAnalyzer.new :node => node
+          analyzer = GrsBagAnalyzer.new :node => node
           CSV.open(log, 'a') do |csv|
             puts "#{identifier}"
             csv << [
