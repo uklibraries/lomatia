@@ -1,9 +1,14 @@
+GIT
+  remote: https://github.com/uklibraries/bagit.git
+  revision: 7d8bfa563b14005f37f85e67f7dc7805f06b15b1
+  specs:
+    bagit (0.3.3)
+      docopt (~> 0.5.0)
+      validatable (~> 1.6)
+
 GEM
   remote: https://rubygems.org/
   specs:
-    bagit (0.3.2)
-      docopt (~> 0.5.0)
-      validatable (~> 1.6)
     docopt (0.5.0)
     mini_portile (0.6.0)
     mono_logger (1.1.0)
@@ -39,7 +44,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bagit
+  bagit!
   net-ssh
   nokogiri
   pairtree

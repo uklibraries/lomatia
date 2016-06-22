@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'bagit'
+gem 'bagit', :git => 'https://github.com/uklibraries/bagit.git'
 gem 'net-ssh'
 gem 'nokogiri'
 gem 'pairtree'
