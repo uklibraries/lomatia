@@ -17,7 +17,7 @@ GEM
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
     pairtree (0.1.0)
-    rack (1.5.2)
+    rack (1.5.5)
     rack-protection (1.5.1)
       rack
     rake (10.3.2)
@@ -48,7 +48,7 @@ DEPENDENCIES
   net-ssh
   nokogiri
   pairtree
-  rack
+  rack (~> 1.5.4)
   rake
   resque
   trollop
