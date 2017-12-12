@@ -64,6 +64,16 @@ module Lomatia
       end
     end
 
+    def self.check_fixity_priority options
+      node = File.join options['node'], options['path']
+
+      if File.exist?(File.join node, 'bagit.txt')
+        Resque.enqueue(Lomatia::Worker::CheckFixityPriority::Bag, options)
+      else
+        Resque.enqueue(Lomatia::Worker::CheckFixityPriority::Branch, options)
+      end
+    end
+
     def self.repair_mets_cruft options
       node = File.join options['node'], options['path']
 
