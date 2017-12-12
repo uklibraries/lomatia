@@ -1,4 +1,5 @@
 require 'lomatia/worker/check_fixity'
+require 'lomatia/worker/check_fixity_priority'
 require 'lomatia/worker/clean_solr'
 require 'lomatia/worker/gather_records'
 require 'lomatia/worker/gather_repository_statistics'
